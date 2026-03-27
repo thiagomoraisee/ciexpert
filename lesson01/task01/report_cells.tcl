@@ -5,7 +5,7 @@
 # Description: Contagem de inst6ancias de cada tipo de célula no arquivo de netlist.     #
 # ====================================================================================== #
 
-set filename contador_netlist.tcl 
+set filename ../netlist.v
 
 array set cells {}
 set total 0
@@ -17,7 +17,6 @@ if {[catch {open $filename r} fileId]} {
 
 while {[gets $fileId line] >= 0} {
   set line [string trim $line]
-    
   # Pass blank lines, comments and modules declarations
   if {$line eq "" || [string match "//*" $line] 
       || [string match "/*" $line] 
