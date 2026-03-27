@@ -1,0 +1,12 @@
+
+=== HIERARQUIA DO DESIGN ===
+somador_4bits
+  └─ (apenas células primitivas)
+
+flipflop_D
+  └─ (módulo primitivo - sem submódulos)
+
+contador_4bits
+  ├─ flipflop_D (4 instâncias)
+  └─ (apenas células primitivas)
+

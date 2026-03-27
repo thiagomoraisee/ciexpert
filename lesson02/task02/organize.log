@@ -1,0 +1,26 @@
+-----=== REFERENCE FLOW ORGANIZER ===-----
+ Creating folder structure
+ Moving artifacts to folders
+.
+├── docs
+│   └── README.md
+├── include
+│   └── defs.vh
+├── Makefile
+├── organize.log
+├── organize.sh
+├── report_hierarchy.rpt
+├── scripts
+│   ├── design_hierarchy.tcl
+│   ├── script.tcl
+│   └── sim.do
+├── src
+│   ├── alu.v
+│   ├── mux.v
+│   ├── netlist.v
+│   ├── regfile.v
+│   └── top.v
+└── tb
+    └── alu_tb.v
+
+6 directories, 15 files
