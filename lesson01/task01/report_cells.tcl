@@ -5,46 +5,49 @@
 # Description: Contagem de inst6ancias de cada tipo de célula no arquivo de netlist.     #
 # ====================================================================================== #
 
-set filename ../netlist.v
+proc count_cells {netlist {chan stdout}} {
 
-array set cells {}
-set total 0
-
-if {[catch {open $filename r} fileId]} {
-    puts "ERRO: Arquivo não encontrado: $fileId"
-    return
-}
-
-while {[gets $fileId line] >= 0} {
-  set line [string trim $line]
-  # Pass blank lines, comments and modules declarations
-  if {$line eq "" || [string match "//*" $line] 
-      || [string match "/*" $line] 
-      || [string match "module*" $line]} {
-    continue
+  array set cells {}
+  if {[catch {open $netlist r} fd]} {
+      puts "ERRO: Arquivo não encontrado: $fd"
+      return
   }
 
-  # Search for REGEX pattern "CELL Name (":
-  # ^(\w+): First word in line is the CELL name
-  # \s    : A space after CELL name
-  # \w    : A word (name of instance after the cell)
-  # \s(   : A space followed by a "(" indicates the port list
+  while {[gets $fd line] >= 0} {
+    set line [string trim $line]
+    # Pass blank lines, comments and modules declarations
+    if {$line eq "" || [string match "//*" $line] 
+        || [string match "/*" $line] 
+        || [string match "module*" $line]} {
+      continue
+    }
 
-  if {[regexp {^(\w+)\s+\w+\s*\(}  $line match cell_type]} {
-    if {[info exists cells($cell_type)]} {
-      incr cells($cell_type)
-    } else {
-      set cells($cell_type) 1
+    # Search for REGEX pattern "CELL Name (":
+    # ^(\w+): First word in line is the CELL name
+    # \s    : A space after CELL name
+    # \w    : A word (name of instance after the cell)
+    # \s(   : A space followed by a "(" indicates the port list
+
+    if {[regexp {^(\w+)\s+\w+\s*\(}  $line match cell_type]} {
+      if {[info exists cells($cell_type)]} {
+        incr cells($cell_type)
+      } else {
+        set cells($cell_type) 1
+      }
     }
   }
+  close $fd
+  return [array get cells]
 }
 
-close $fileId
+proc report_cells {netlist {chan stdout}} {
+  set total 0
+  array set cells [count_cells $netlist]
 
-# Print Report
-puts "=== RELATÓIRO DE CÉLULAS ==="
-foreach cell [lsort [array names cells]] {
-  puts [format "%s: %s instâncias" $cell $cells($cell)]
-  set total [expr {$total + $cells($cell)}]
+  puts $chan "=== RELATÓIRO DE CÉLULAS ==="
+  foreach cell [lsort [array names cells]] {
+    puts $chan [format "%s: %s instâncias" $cell $cells($cell)]
+    set total [expr {$total + $cells($cell)}]
+  }
+  puts $chan "TOTAL: $total instâncias"
 }
-puts "TOTAL: $total instâncias"
