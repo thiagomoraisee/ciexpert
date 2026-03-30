@@ -8,7 +8,7 @@
 
 set netlist ../netlist.v
 
-proc count_fanout {start end file_name} {
+proc count_fanout {file_name {start 0} {end 0}} {
   array set fanout {}
 
   # Open the file in read mode
@@ -19,7 +19,7 @@ proc count_fanout {start end file_name} {
 
   set line_counter 1
   while {[gets $fileId line] >= 0} {
-    if {$line_counter >= $start && $line_counter <= $end} {
+    if {$line_counter >= $start && $line_counter <= $end || $start + $end == 0} {
       set pattern {\.\w+\(([^)]+)\)}
       set matches [regexp -all -inline $pattern $line]
 
@@ -36,7 +36,7 @@ proc count_fanout {start end file_name} {
           set fanout($wire) 1
         }
       }
-    } 
+    }
     incr line_counter
   }
   close $fileId
@@ -55,29 +55,44 @@ proc get_max_fanout {fanout_list} {
     }
     incr position
   }
-  puts $max_val
-  puts $max_pos
-
   lappend max_fanout [lindex $fanout_list [expr {2 * $max_pos }]]
   lappend max_fanout [lindex $fanout_list [expr {2 * $max_pos +1}]]
 
   set fanout_list [lreplace $fanout_list [expr {2 * $max_pos}] [expr {2 * $max_pos + 1}] ]
 
-  return $max_fanout
+  return [list $max_fanout $fanout_list]
 }
 
+## Main Application
 
+set max_fanout_vals {}
+set max_fanout_nets {}
+set zero_fanout_nets {}
 
+set fanout_list [count_fanout $netlist]
+while {[llength $fanout_list] > 0} {
+  set max_fanout [get_max_fanout $fanout_list]
+  set max_tuple [lindex $max_fanout 0]
+  set fanout_list [lindex $max_fanout 1]
 
+  set fanout_key [lindex $max_tuple 0]
+  set fanout_val [lindex $max_tuple 1]
 
+  if {$fanout_val <= 1} {
+    lappend zero_fanout_nets $fanout_key
+  } else {
+    lappend max_fanout_nets $fanout_key
+    lappend max_fanout_vals $fanout_val
+  }
+}
 
-# Print Report
 puts "\n=== TOP 10 NETS POR FANOUT ==="
-puts "\n=== NETS COM FANOUT ZERO ==="
-
-set f [count_fanout 0 16 $netlist]
-puts $f
-puts [get_max_fanout $f ]
-puts $f
-
-                  
+for {set i 0} {$i<10} {incr i} {
+  set key [lindex $max_fanout_nets $i]
+  set val [lindex $max_fanout_vals $i]
+  puts "$key: fanout = $val"
+}
+puts "\n=== NETS COM FANOUT ZERO (POSSÍVEIS ERROS) ==="
+foreach net $zero_fanout_nets {
+  puts "$net"
+}
