@@ -64,35 +64,37 @@ proc get_max_fanout {fanout_list} {
 }
 
 ## Main Application
+proc report_connections {netlist {chan stdout}} {
 
-set max_fanout_vals {}
-set max_fanout_nets {}
-set zero_fanout_nets {}
+  set max_fanout_vals {}
+  set max_fanout_nets {}
+  set zero_fanout_nets {}
 
-set fanout_list [count_fanout $netlist]
-while {[llength $fanout_list] > 0} {
-  set max_fanout [get_max_fanout $fanout_list]
-  set max_tuple [lindex $max_fanout 0]
-  set fanout_list [lindex $max_fanout 1]
+  set fanout_list [count_fanout $netlist]
+  while {[llength $fanout_list] > 0} {
+    set max_fanout [get_max_fanout $fanout_list]
+    set max_tuple [lindex $max_fanout 0]
+    set fanout_list [lindex $max_fanout 1]
 
-  set fanout_key [lindex $max_tuple 0]
-  set fanout_val [lindex $max_tuple 1]
+    set fanout_key [lindex $max_tuple 0]
+    set fanout_val [lindex $max_tuple 1]
 
-  if {$fanout_val <= 1} {
-    lappend zero_fanout_nets $fanout_key
-  } else {
-    lappend max_fanout_nets $fanout_key
-    lappend max_fanout_vals $fanout_val
+    if {$fanout_val <= 1} {
+      lappend zero_fanout_nets $fanout_key
+    } else {
+      lappend max_fanout_nets $fanout_key
+      lappend max_fanout_vals $fanout_val
+    }
   }
-}
 
-puts "\n=== TOP 10 NETS POR FANOUT ==="
-for {set i 0} {$i<10} {incr i} {
-  set key [lindex $max_fanout_nets $i]
-  set val [lindex $max_fanout_vals $i]
-  puts "$key: fanout = $val"
-}
-puts "\n=== NETS COM FANOUT ZERO (POSSÍVEIS ERROS) ==="
-foreach net $zero_fanout_nets {
-  puts "$net"
+  puts $chan "\n=== TOP 10 NETS POR FANOUT ==="
+  for {set i 0} {$i<10} {incr i} {
+    set key [lindex $max_fanout_nets $i]
+    set val [lindex $max_fanout_vals $i]
+    puts $chan "$key: fanout = $val"
+  }
+  puts $chan "\n=== NETS COM FANOUT ZERO (POSSÍVEIS ERROS) ==="
+  foreach net $zero_fanout_nets {
+    puts $chan "$net"
+  }
 }
