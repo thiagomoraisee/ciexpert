@@ -2,7 +2,7 @@ run:
 	bash ./organize.sh
 
 rpt: run
-	tclsh scripts/design_hierarchy.tcl > report_hierarchy.rpt
+	tclsh scripts/summary.tcl > summary.log
 
 revert:
 	mv docs/* .
