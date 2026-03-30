@@ -88,27 +88,28 @@ proc find_limits {module_name file_name} {
   return $limits
 }
 
-# Print Report
-puts "\n=== HIERARQUIA DO DESIGN ==="
-set modules [find_modules $netlist]
+proc report_hierarchy {netlist {chan stdout}} {
+  puts $chan "\n=== HIERARQUIA DO DESIGN ==="
+  set modules [find_modules $netlist]
 
-foreach module $modules {
-  puts "$module"
+  foreach module $modules {
+    puts $chan "$module"
 
-  set limits [find_limits $module $netlist]
-  set begin [lindex $limits 0]
-  set end [lindex $limits 1]
-  set submodules [search $begin $end $netlist]
+    set limits [find_limits $module $netlist]
+    set begin [lindex $limits 0]
+    set end [lindex $limits 1]
+    set submodules [search $begin $end $netlist]
 
-  if {$submodules eq ""} {
-    puts "  └─ (módulo primitivo - sem submódulos)\n"
-  } else {
-    foreach submodule $submodules {
-      if {[lsearch $modules $submodule] != -1} {
-        set index [lsearch $submodules $submodule]
-        puts "  ├─ $submodule ([lindex $submodules $index+1] instâncias)"
+    if {$submodules eq ""} {
+      puts $chan "  └─ (módulo primitivo - sem submódulos)\n"
+    } else {
+      foreach submodule $submodules {
+        if {[lsearch $modules $submodule] != -1} {
+          set index [lsearch $submodules $submodule]
+          puts $chan "  ├─ $submodule ([lindex $submodules $index+1] instâncias)"
+        }
       }
+      puts $chan "  └─ (apenas células primitivas)\n"
     }
-    puts "  └─ (apenas células primitivas)\n"
   }
 }

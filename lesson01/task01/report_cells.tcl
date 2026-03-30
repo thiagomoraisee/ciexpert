@@ -44,7 +44,7 @@ proc report_cells {netlist {chan stdout}} {
   set total 0
   array set cells [count_cells $netlist]
 
-  puts $chan "=== RELATÓIRO DE CÉLULAS ==="
+  puts $chan "=== RELATÓRIO DE CÉLULAS ==="
   foreach cell [lsort [array names cells]] {
     puts $chan [format "%s: %s instâncias" $cell $cells($cell)]
     set total [expr {$total + $cells($cell)}]
