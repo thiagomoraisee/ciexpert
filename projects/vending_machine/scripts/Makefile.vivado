@@ -1,0 +1,17 @@
+.PHONY: run gui clean
+
+BLOCK = memory
+VCD = sim_project/sim_project.sim/sim_1/behav/xsim/waveform.vcd
+
+run:
+	vivado -mode batch -source ../scripts/sim.tcl -tclargs $(BLOCK)_tb
+
+gui:
+	vivado -source ../scripts/sim.tcl -tclargs $(BLOCK)_tb &
+
+waves:
+	gtkwave $(VCD) &
+
+clean:
+	rm -rf sim_project *.log *.jou *.pb
+

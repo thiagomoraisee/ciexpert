@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+chan clk;
+bool confirm, cancel, can_sell;
+int[0,3] coin_in;
+int credit, price;</declaration>
+	<template>
+		<name>vending_machine_ctrl</name>
+		<parameter>bool &amp;confirm, bool &amp;cancel, bool &amp;can_sell, int[0,3] &amp;coin_in, int &amp;credit, int &amp;price</parameter>
+		<declaration>bool dispense, error, mem_read, mem_write, credit_load;
+int change_out;</declaration>
+		<location id="id0" x="-272" y="136">
+			<name x="-263" y="144">CHANGE</name>
+		</location>
+		<location id="id1" x="68" y="136">
+			<name x="76" y="144">DISPENSE</name>
+		</location>
+		<location id="id2" x="-272" y="0">
+			<name x="-263" y="-34">IDLE</name>
+		</location>
+		<location id="id3" x="-102" y="-136">
+			<name x="-187" y="-161">COLLECT</name>
+		</location>
+		<location id="id4" x="68" y="0">
+			<name x="76" y="-34">CHECK</name>
+		</location>
+		<location id="id5" x="-102" y="0">
+			<name x="-144" y="17">ERROR</name>
+		</location>
+		<init ref="id2"/>
+		<transition id="id6">
+			<source ref="id5"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-127" y="-85">!cancel</label>
+			<label kind="synchronisation" x="-119" y="-102">clk?</label>
+			<nail x="-136" y="-34"/>
+			<nail x="-102" y="-68"/>
+			<nail x="-68" y="-34"/>
+		</transition>
+		<transition id="id7">
+			<source ref="id0"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="-306" y="42">clk?</label>
+			<label kind="assignment" x="-374" y="59">change_out  := credit - price,
+credit_load := true</label>
+		</transition>
+		<transition id="id8">
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-221" y="119">clk?</label>
+			<label kind="assignment" x="-178" y="119">dispense  := false,
+mem_write := false</label>
+		</transition>
+		<transition id="id9">
+			<source ref="id4"/>
+			<target ref="id1"/>
+			<label kind="guard" x="68" y="34">can_sell</label>
+			<label kind="synchronisation" x="68" y="17">clk?</label>
+			<label kind="assignment" x="-17" y="51">mem_read  := false,
+dispense  := true,
+mem_write := true</label>
+		</transition>
+		<transition id="id10">
+			<source ref="id5"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-221" y="-17">cancel</label>
+			<label kind="synchronisation" x="-153" y="-17">clk?</label>
+			<label kind="assignment" x="-238" y="0">error := false</label>
+		</transition>
+		<transition id="id11">
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-34" y="-17">!can_sell</label>
+			<label kind="synchronisation" x="-76" y="-17">clk?</label>
+			<label kind="assignment" x="-85" y="0">mem_read := false,
+error    := true</label>
+		</transition>
+		<transition id="id12">
+			<source ref="id3"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-34" y="-153">confirm</label>
+			<label kind="synchronisation" x="-76" y="-153">clk?</label>
+			<label kind="assignment" x="-34" y="-136">credit_load := false,
+mem_read    := true</label>
+			<nail x="68" y="-136"/>
+		</transition>
+		<transition id="id13">
+			<source ref="id3"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-136" y="-238">!confirm</label>
+			<label kind="synchronisation" x="-119" y="-255">clk?</label>
+			<label kind="assignment" x="-280" y="-221">credit_load := (coin_in != 0)? true : false</label>
+			<nail x="-136" y="-170"/>
+			<nail x="-102" y="-204"/>
+			<nail x="-68" y="-170"/>
+		</transition>
+		<transition id="id14">
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-340" y="-153">coin_in != 0</label>
+			<label kind="synchronisation" x="-229" y="-153">clk?</label>
+			<label kind="assignment" x="-374" y="-136">credit_load := true</label>
+			<nail x="-272" y="-136"/>
+		</transition>
+		<transition id="id15">
+			<source ref="id2"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-416" y="-68">coin_in == 0</label>
+			<label kind="synchronisation" x="-416" y="-85">clk?</label>
+			<label kind="assignment" x="-450" y="-51">credit_load := false</label>
+			<nail x="-306" y="34"/>
+			<nail x="-340" y="0"/>
+			<nail x="-306" y="-34"/>
+		</transition>
+	</template>
+	<template>
+		<name>driver</name>
+		<parameter>bool &amp;confirm, bool &amp;cancel, bool &amp;can_sell, int[0,3] &amp;coin_in, int &amp;credit, int &amp;price</parameter>
+		<location id="id16" x="102" y="68">
+			<name x="110" y="8">INSUFFICIENT</name>
+		</location>
+		<location id="id17" x="-102" y="68">
+			<name x="-195" y="34">SUFFICIENT</name>
+		</location>
+		<location id="id18" x="0" y="68">
+			<name x="-51" y="85">SELECT_ITEM</name>
+		</location>
+		<location id="id19" x="0" y="-34">
+			<name x="-136" y="-68">INSERT_COIN</name>
+		</location>
+		<init ref="id19"/>
+		<transition id="id20">
+			<source ref="id16"/>
+			<target ref="id19"/>
+			<label kind="synchronisation" x="68" y="-34">clk!</label>
+			<label kind="assignment" x="110" y="-34">cancel := true</label>
+			<nail x="102" y="-34"/>
+		</transition>
+		<transition id="id21">
+			<source ref="id16"/>
+			<target ref="id16"/>
+			<label kind="synchronisation" x="119" y="51">clk!</label>
+			<label kind="assignment" x="170" y="51">cancel := false</label>
+			<nail x="136" y="34"/>
+			<nail x="170" y="68"/>
+			<nail x="136" y="102"/>
+		</transition>
+		<transition id="id22">
+			<source ref="id17"/>
+			<target ref="id19"/>
+			<label kind="synchronisation" x="-102" y="-34">clk!</label>
+			<nail x="-102" y="-34"/>
+		</transition>
+		<transition id="id23">
+			<source ref="id18"/>
+			<target ref="id16"/>
+			<label kind="synchronisation" x="17" y="51">clk!</label>
+			<label kind="assignment" x="17" y="110">confirm  := false,
+can_sell := false,
+credit   := 25,
+price    := 100</label>
+		</transition>
+		<transition id="id24">
+			<source ref="id18"/>
+			<target ref="id17"/>
+			<label kind="synchronisation" x="-51" y="51">clk!</label>
+			<label kind="assignment" x="-161" y="110">confirm  := false,
+can_sell := true,
+credit   := 100,
+price    := 25</label>
+		</transition>
+		<transition id="id25">
+			<source ref="id19"/>
+			<target ref="id18"/>
+			<label kind="synchronisation" x="-34" y="-8">clk!</label>
+			<label kind="assignment" x="-68" y="8">confirm := true</label>
+		</transition>
+		<transition id="id26">
+			<source ref="id19"/>
+			<target ref="id19"/>
+			<label kind="select" x="-76" y="-136">value : int[0,3]</label>
+			<label kind="synchronisation" x="-17" y="-85">clk!</label>
+			<label kind="assignment" x="-76" y="-119">coin_in := value</label>
+			<nail x="-34" y="-68"/>
+			<nail x="0" y="-102"/>
+			<nail x="34" y="-68"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+P1 = vending_machine_ctrl(confirm, cancel, can_sell, coin_in, credit, price);
+D1 = driver(confirm, cancel, can_sell, coin_in, credit, price);
+// List one or more processes to be composed into a system.
+system P1, D1;
+</system>
+	<queries>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+	</queries>
+</nta>

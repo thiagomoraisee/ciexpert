@@ -1,0 +1,98 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:34:34 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Fri Jul 17 20:20:20 2026
+# Process ID         : 11340
+# Current directory  : /home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/workspace
+# Command line       : vivado -mode batch -source ../scripts/sim.tcl -tclargs memory_tb
+# Log file           : /home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/workspace/vivado.log
+# Journal file       : /home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/workspace/vivado.jou
+# Running On         : olimort
+# Platform           : Linuxmint
+# Operating System   : Linux Mint 22.1
+# Processor Detail   : Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz
+# CPU Frequency      : 2400.000 MHz
+# CPU Physical cores : 4
+# CPU Logical cores  : 8
+# Host memory        : 20784 MB
+# Swap memory        : 17179 MB
+# Total Virtual      : 37964 MB
+# Available Virtual  : 35715 MB
+#-----------------------------------------------------------
+source ../scripts/sim.tcl
+# set TB_TOP [lindex $argv 0]
+# set FPGA_VARIANT xc7a100tcsg324-1
+# create_project -force sim_project ./sim_project -part $FPGA_VARIANT
+# add_files -fileset sim_1 [glob ../rtl/src/*.sv]
+# add_files -fileset sim_1 [glob ../rtl/tb/*.sv]
+# set_property top $TB_TOP [get_filesets sim_1]
+# set_msg_config -id {USF-XSim-96} -suppress
+# set_msg_config -id {USF-XSim-97} -suppress
+# set_msg_config -id {Simulation 116-44} -suppress
+# launch_simulation -verbose
+Command: launch_simulation 
+INFO: [Vivado 12-12493] Simulation top is 'memory_tb'
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/workspace/sim_project/sim_project.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-72] Using boost library from '/opt/Xilinx/Vivado/2024.2/tps/boost_1_72_0'
+INFO: [SIM-utils-54] Inspecting design source files for 'memory_tb' in fileset 'sim_1'...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/workspace/sim_project/sim_project.sim/sim_1/behav/xsim'
+xvlog --incr --relax -L uvm -prj memory_tb_vlog.prj
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/rtl/src/memory.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module memory
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/rtl/tb/memory_tb.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module memory_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/workspace/sim_project/sim_project.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+Waiting for jobs to finish...
+No pending jobs, compilation finished.
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/workspace/sim_project/sim_project.sim/sim_1/behav/xsim'
+xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot memory_tb_behav xil_defaultlib.memory_tb xil_defaultlib.glbl -log elaborate.log
+Vivado Simulator v2024.2.0
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: /opt/Xilinx/Vivado/2024.2/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip --snapshot memory_tb_behav xil_defaultlib.memory_tb xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by AMD, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the "-mt off -v 1" switches to see more information from the C compiler. The following environment variables have been detected:
+    LIBRARY_PATH
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4100] "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/workspace/sim_project/sim_project.sim/sim_1/behav/xsim/glbl.v" Line 6. Module glbl has a timescale but at least one module in design doesn't have timescale.
+WARNING: [XSIM 43-4100] "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/workspace/sim_project/sim_project.sim/sim_1/behav/xsim/glbl.v" Line 6. Module glbl has a timescale but at least one module in design doesn't have timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.memory
+Compiling module xil_defaultlib.memory_tb
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot memory_tb_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '3' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/workspace/sim_project/sim_project.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "memory_tb_behav -key {Behavioral:sim_1:Functional:memory_tb} -tclbatch {memory_tb.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Time resolution is 1 ps
+source memory_tb.tcl
+## set curr_wave [current_wave_config]
+## if { [string length $curr_wave] == 0 } {
+##   if { [llength [get_objects]] > 0} {
+##     add_wave /
+##     set_property needs_save false [current_wave_config]
+##   } else {
+##      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+##   }
+## }
+## run 1000ns
+$stop called at time : 95 ns : File "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/rtl/tb/memory_tb.sv" Line 57
+launch_simulation: Time (s): cpu = 00:00:07 ; elapsed = 00:00:10 . Memory (MB): peak = 1434.840 ; gain = 61.316 ; free physical = 13231 ; free virtual = 33621
+# run 2000ms
+$finish called at time : 95 ns : File "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/rtl/tb/memory_tb.sv" Line 58
+INFO: [Common 17-206] Exiting Vivado at Fri Jul 17 20:20:35 2026...

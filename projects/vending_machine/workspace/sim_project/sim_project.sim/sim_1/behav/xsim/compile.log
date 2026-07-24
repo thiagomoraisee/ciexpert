@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/rtl/src/memory.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module memory
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/rtl/tb/memory_tb.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module memory_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/workspace/sim_project/sim_project.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
