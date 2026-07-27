@@ -6,9 +6,9 @@
 # Description: Summarizes all reports generation into a complete reports generator.      #
 # ====================================================================================== #
 
-source ../task01/report_cells.tcl
-source ../task02/report_hierarchy.tcl
-source ../task03/report_connections.tcl
+source ../../mod01_tcl/lab01_cell_report/report_cells.tcl
+source ../../mod01_tcl/lab02_design_hierarchy/report_hierarchy.tcl
+source ../../mod01_tcl/lab03_connection_stats/report_connections.tcl
 
 proc run_task {task_name function_call report_file netlist} {
   puts "Running $task_name ... "
@@ -23,7 +23,7 @@ proc run_task {task_name function_call report_file netlist} {
   close $fd
 }
 
-set netlist ../netlist.v
+set netlist src/netlist.v
 run_task "Cell Report" report_cells "cells.rpt" $netlist
 run_task "Hierarchy Report" report_hierarchy "hierarchy.rpt" $netlist
 run_task "Connections Report" report_connections "connections.rpt" $netlist

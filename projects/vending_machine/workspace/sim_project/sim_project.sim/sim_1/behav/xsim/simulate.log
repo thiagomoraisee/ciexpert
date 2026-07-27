@@ -1,3 +1,0 @@
-Time resolution is 1 ps
-$stop called at time : 95 ns : File "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/rtl/tb/memory_tb.sv" Line 57
-$finish called at time : 95 ns : File "/home/thiago/Documentos/Microelectronics/CIExpert/ciexpert/projects/vending_machine/rtl/tb/memory_tb.sv" Line 58

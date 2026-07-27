@@ -1,4 +1,4 @@
-# Reference Flow Oerganizer
+# Artifacts Organizer
 
 This example organizes artifacts in a directory structure and run scripts for report generation.
 
